@@ -20,8 +20,7 @@ export class Register {
 
   private router = inject(Router);
 
-  private readonly apiUrl =
-    'http://localhost:8001';
+  private readonly apiUrl = ''; 
 
 
   name = '';

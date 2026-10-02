@@ -29,8 +29,7 @@ export class AuthService {
 
   private platformId = inject(PLATFORM_ID);
 
-  private readonly apiUrl =
-    'http://localhost:8001';
+  private readonly apiUrl = '';
 
 
   login(

@@ -52,7 +52,7 @@ export class ApiService {
 
   private http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://localhost:8001';
+  private readonly apiUrl = '';
 
   getHealth() {
     return this.http.get<{ status: string }>(
