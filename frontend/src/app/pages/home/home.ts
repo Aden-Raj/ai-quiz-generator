@@ -54,8 +54,6 @@ logout(): void {
 
       next: (response) => {
 
-        console.log('Quiz generated:', response);
-
         /*
          * Temporarily store the generated quiz.
          * Later we'll replace this with a proper QuizState service.

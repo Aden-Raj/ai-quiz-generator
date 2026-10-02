@@ -43,11 +43,6 @@ export class History {
 
       next: (response) => {
 
-        console.log(
-          'Quiz history:',
-          response
-        );
-
         this.history.set(response);
 
         this.loading.set(false);

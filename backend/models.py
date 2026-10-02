@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
@@ -35,8 +35,8 @@ class QuizResponse(BaseModel):
 class QuizSaveRequest(BaseModel):
     topic: str
     difficulty: str
-    question_count: int
-    score: int
+    question_count: int = Field(gt=0)
+    score: int = Field(ge=0)
 
 
 # ============================================================

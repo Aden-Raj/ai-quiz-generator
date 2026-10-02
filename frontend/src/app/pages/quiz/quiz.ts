@@ -152,11 +152,6 @@ export class Quiz {
 
     next: (response) => {
 
-      console.log(
-        'Quiz saved to PostgreSQL:',
-        response
-      );
-
       this.router.navigate(['/result']);
 
     },

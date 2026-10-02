@@ -1,6 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -129,9 +128,10 @@ def register_user(
 
     if existing_user:
 
-        return {
-            "message": "Email already registered"
-        }
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email already registered"
+    )
 
 
     # Hash password
@@ -182,10 +182,10 @@ def login_user(
 
     if not user:
 
-        return {
-            "message": "Invalid email or password"
-        }
-
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password"
+    )
 
     # Verify password
 
@@ -196,9 +196,10 @@ def login_user(
 
     if not password_valid:
 
-        return {
-            "message": "Invalid email or password"
-        }
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password"
+    )
 
 
     # Create JWT token

@@ -47,7 +47,6 @@ def generate_quiz(request: QuizRequest) -> QuizResponse:
 
     response = client.chat.completions.create(
 
-        # OpenRouter free model router
         model="openrouter/free",
 
         messages=[
@@ -183,41 +182,20 @@ Requirements:
         }
     )
 
-
     # ========================================================
-    # DEBUG AI RESPONSE
+    # GET AI RESPONSE
     # ========================================================
-
-    print("\n")
-    print("================================================")
-    print("AI RESPONSE")
-    print("================================================")
-
-    print("Model:")
-    print(response.model)
-
-    print("\nFinish reason:")
-    print(response.choices[0].finish_reason)
 
     content = response.choices[0].message.content
-
-    print("\nRaw content:")
-    print(repr(content))
-
-    print("================================================")
-    print("\n")
-
 
     # ========================================================
     # CHECK FOR EMPTY RESPONSE
     # ========================================================
 
     if not content:
-
         raise RuntimeError(
             "AI returned an empty response."
         )
-
 
     # ========================================================
     # PARSE JSON
@@ -229,78 +207,21 @@ Requirements:
 
     except json.JSONDecodeError as e:
 
-        print("\n")
-        print("================================================")
-        print("INVALID JSON FROM AI")
-        print("================================================")
-
-        print("Raw AI response:")
-        print(repr(content))
-
-        print("================================================")
-        print("\n")
-
         raise RuntimeError(
             f"AI returned invalid JSON: {e}"
         )
 
-
-    # ========================================================
-    # DEBUG PARSED DATA
-    # ========================================================
-
-    print("\n")
-    print("================================================")
-    print("PARSED AI DATA")
-    print("================================================")
-
-    print(quiz_data)
-
-    print("================================================")
-    print("\n")
-
-
     # ========================================================
     # HANDLE LIST RESPONSE
-    # ========================================================
-    #
-    # Sometimes the AI may return:
-    #
-    # [
-    #     {
-    #         "question": "...",
-    #         "options": [...],
-    #         "correct_answer": "...",
-    #         "explanation": "..."
-    #     }
-    # ]
-    #
-    # But QuizResponse expects:
-    #
-    # {
-    #     "topic": "...",
-    #     "difficulty": "...",
-    #     "questions": [...]
-    # }
-    #
-    # So we wrap the list into the expected structure.
     # ========================================================
 
     if isinstance(quiz_data, list):
 
-        print(
-            "AI returned a list instead of a QuizResponse object."
-        )
-
         quiz_data = {
-
             "topic": request.topic,
-
             "difficulty": request.difficulty,
-
             "questions": quiz_data
         }
-
 
     # ========================================================
     # MAKE SURE RESPONSE IS A DICTIONARY
@@ -311,7 +232,6 @@ Requirements:
         raise RuntimeError(
             "AI response must be a JSON object or a list of questions."
         )
-
 
     # ========================================================
     # VALIDATE WITH PYDANTIC
@@ -324,20 +244,6 @@ Requirements:
         return quiz
 
     except Exception as e:
-
-        print("\n")
-        print("================================================")
-        print("INVALID QUIZ STRUCTURE")
-        print("================================================")
-
-        print("Data received:")
-        print(quiz_data)
-
-        print("\nValidation error:")
-        print(e)
-
-        print("================================================")
-        print("\n")
 
         raise RuntimeError(
             f"AI response does not match QuizResponse structure: {e}"

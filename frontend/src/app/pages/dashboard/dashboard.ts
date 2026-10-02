@@ -57,11 +57,6 @@ export class Dashboard {
 
       next: (response) => {
 
-        console.log(
-          'Dashboard stats:',
-          response
-        );
-
         this.stats.set(response);
 
         this.loading.set(false);
@@ -92,11 +87,6 @@ export class Dashboard {
   this.apiService.getQuizHistory().subscribe({
 
     next: (response) => {
-
-      console.log(
-        'Recent quizzes:',
-        response
-      );
 
       this.recentQuizzes.set(
         response.slice(0, 3)
