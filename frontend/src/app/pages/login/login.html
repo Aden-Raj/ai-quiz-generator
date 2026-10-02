@@ -1,0 +1,95 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="login-header">
+
+      <div class="logo">
+        🧠
+      </div>
+
+      <h1>Welcome Back</h1>
+
+      <p>
+        Login to continue your quiz journey.
+      </p>
+
+    </div>
+
+
+    <form (ngSubmit)="login()">
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+        />
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+        />
+
+      </div>
+
+
+      @if (errorMessage()) {
+
+        <div class="error-message">
+          {{ errorMessage() }}
+        </div>
+
+      }
+
+
+      <button
+        type="submit"
+        [disabled]="loading()"
+      >
+
+        @if (loading()) {
+          Logging in...
+        } @else {
+          Login
+        }
+
+      </button>
+
+    </form>
+
+
+    <div class="login-footer">
+
+      <span>Don't have an account?</span>
+
+      <a routerLink="/register">
+        Create account
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

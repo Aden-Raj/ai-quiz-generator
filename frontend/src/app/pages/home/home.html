@@ -1,0 +1,244 @@
+<nav class="navbar">
+
+  <div class="navbar-brand">
+    🧠 AI Quiz Generator
+  </div>
+
+  <div class="navbar-links">
+
+    <a routerLink="/">
+      Home
+    </a>
+
+    @if (authService.isLoggedIn()) {
+      
+      <a routerLink="/dashboard">
+    Dashboard
+  </a>
+
+      <a routerLink="/history">
+        History
+      </a>
+
+      <span class="user-name">
+        {{ authService.getUser()?.name }}
+      </span>
+
+      <button
+        class="logout-button"
+        (click)="logout()"
+      >
+        Logout
+      </button>
+
+    } @else {
+
+      <a routerLink="/login">
+        Login
+      </a>
+
+      <a
+        routerLink="/register"
+        class="register-button"
+      >
+        Register
+      </a>
+
+    }
+
+  </div>
+
+</nav>
+
+<div class="home-container">
+
+  <section class="hero">
+
+    <div class="hero-badge">
+      ✨ AI-Powered Learning
+    </div>
+
+    <h1>
+      Test Your Knowledge
+      <span>with AI</span>
+    </h1>
+
+    <p>
+      Create personalized quizzes on any topic,
+      powered by artificial intelligence.
+    </p>
+
+  </section>
+
+
+  <section class="setup-card">
+
+    <div class="setup-header">
+      <div class="setup-icon">
+        🧠
+      </div>
+
+      <div>
+        <h2>Create Your Quiz</h2>
+
+        <p>
+          Choose your preferences and let AI
+          generate your quiz.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Topic
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="topic"
+        placeholder="e.g. Python, Angular, JavaScript..."
+      />
+
+    </div>
+
+
+    <div class="form-row">
+
+      <div class="form-group">
+
+        <label>
+          Difficulty
+        </label>
+
+        <select [(ngModel)]="difficulty">
+
+          <option value="Easy">
+            Easy
+          </option>
+
+          <option value="Medium">
+            Medium
+          </option>
+
+          <option value="Hard">
+            Hard
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Questions
+        </label>
+
+        <select [(ngModel)]="questionCount">
+
+          <option [ngValue]="2">
+            2 Questions
+          </option>
+
+          <option [ngValue]="5">
+            5 Questions
+          </option>
+
+          <option [ngValue]="10">
+            10 Questions
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    @if (errorMessage()) {
+
+      <div class="error-message">
+        {{ errorMessage() }}
+      </div>
+
+    }
+
+
+    <button
+      class="generate-button"
+      (click)="generateQuiz()"
+      [disabled]="loading()"
+    >
+
+      @if (loading()) {
+
+        <span class="button-loader"></span>
+
+        Generating...
+
+      } @else {
+
+        ✨ Generate Quiz
+
+      }
+
+    </button>
+
+  </section>
+
+
+  <section class="features">
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        🤖
+      </div>
+
+      <h3>AI Generated</h3>
+
+      <p>
+        Questions are dynamically generated
+        based on your chosen topic.
+      </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        🎯
+      </div>
+
+      <h3>Personalized</h3>
+
+      <p>
+        Choose the difficulty and number
+        of questions you want.
+      </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        📊
+      </div>
+
+      <h3>Instant Results</h3>
+
+      <p>
+        Get your score and detailed
+        explanations instantly.
+      </p>
+
+    </div>
+
+  </section>
+
+</div>

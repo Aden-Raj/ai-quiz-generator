@@ -1,0 +1,203 @@
+<div class="history-page">
+
+  <div class="history-container">
+
+    <!-- HEADER -->
+
+    <div class="history-header">
+
+      <div>
+
+        <span class="eyebrow">
+          YOUR ACTIVITY
+        </span>
+
+        <h1>
+          Quiz History
+        </h1>
+
+        <p>
+          Review your previous AI-generated quizzes
+          and track your progress.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    @if (loading()) {
+
+      <div class="state-card">
+
+        <div class="loader"></div>
+
+        <p>
+          Loading your quiz history...
+        </p>
+
+      </div>
+
+    }
+
+
+    <!-- ERROR -->
+
+    @if (!loading() && errorMessage()) {
+
+      <div class="state-card error">
+
+        <div class="state-icon">
+          !
+        </div>
+
+        <h3>
+          Something went wrong
+        </h3>
+
+        <p>
+          {{ errorMessage() }}
+        </p>
+
+        <button
+          class="retry-button"
+          (click)="loadHistory()"
+        >
+          Try Again
+        </button>
+
+      </div>
+
+    }
+
+
+    <!-- EMPTY -->
+
+    @if (
+      !loading() &&
+      !errorMessage() &&
+      history().length === 0
+    ) {
+
+      <div class="state-card">
+
+        <div class="empty-icon">
+          ✦
+        </div>
+
+        <h3>
+          No quizzes yet
+        </h3>
+
+        <p>
+          Generate your first quiz to see it here.
+        </p>
+
+      </div>
+
+    }
+
+
+    <!-- HISTORY -->
+
+    @if (
+      !loading() &&
+      !errorMessage() &&
+      history().length > 0
+    ) {
+
+      <div class="history-list">
+
+        @for (
+          quiz of history();
+          track quiz.id
+        ) {
+
+          <div class="history-card">
+
+            <div class="quiz-info">
+
+              <div class="topic-icon">
+                Q
+              </div>
+
+              <div class="topic-details">
+
+                <h2>
+                  {{ quiz.topic }}
+                </h2>
+
+                <div class="meta">
+
+                  <span>
+                    {{ quiz.difficulty }}
+                  </span>
+
+                  <span class="dot">
+                    •
+                  </span>
+
+                  <span>
+                    {{ quiz.question_count }}
+                    questions
+                  </span>
+
+                  <span class="dot">
+                    •
+                  </span>
+
+                  <span>
+                    {{ getDate(quiz.created_at) }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="score-section">
+
+              <div class="score">
+
+                <strong>
+                  {{ getScoreText(quiz) }}
+                </strong>
+
+                <span>
+                  Score
+                </span>
+
+              </div>
+
+
+              <div
+                class="percentage"
+                [class.high]="quiz.percentage >= 80"
+                [class.medium]="
+                  quiz.percentage >= 50 &&
+                  quiz.percentage < 80
+                "
+                [class.low]="quiz.percentage < 50"
+              >
+
+                {{ quiz.percentage | number:'1.0-0' }}%
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

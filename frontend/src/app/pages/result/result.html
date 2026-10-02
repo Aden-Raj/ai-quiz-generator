@@ -1,0 +1,258 @@
+<div class="result-page">
+
+  <div class="result-card">
+
+    <div class="result-header">
+
+      <div class="trophy">
+        🎉
+      </div>
+
+      <h1>Quiz Completed!</h1>
+
+      @if (quiz()) {
+        <p>
+          {{ quiz()?.topic }} ·
+          {{ quiz()?.difficulty }}
+        </p>
+      }
+
+    </div>
+
+
+    <div class="score-section">
+
+      <div class="score-circle">
+
+        <span class="percentage">
+          {{ percentage() }}%
+        </span>
+
+        <span class="score-label">
+          Score
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="stats">
+
+      <div class="stat correct">
+
+        <span class="stat-icon">✓</span>
+
+        <div>
+          <strong>
+            {{ correctAnswers() }}
+          </strong>
+
+          <span>
+            Correct
+          </span>
+        </div>
+
+      </div>
+
+
+      <div class="stat wrong">
+
+        <span class="stat-icon">✕</span>
+
+        <div>
+          <strong>
+            {{ wrongAnswers() }}
+          </strong>
+
+          <span>
+            Wrong
+          </span>
+        </div>
+
+      </div>
+
+
+      <div class="stat total">
+
+        <span class="stat-icon">📝</span>
+
+        <div>
+          <strong>
+            {{ totalQuestions() }}
+          </strong>
+
+          <span>
+            Questions
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="message">
+
+      @if (percentage() >= 80) {
+
+        <h2>Excellent! 🔥</h2>
+
+        <p>
+          You really know your stuff!
+        </p>
+
+      } @else if (percentage() >= 60) {
+
+        <h2>Good job! 👏</h2>
+
+        <p>
+          Keep practicing and you'll get even better.
+        </p>
+
+      } @else {
+
+        <h2>Keep practicing! 💪</h2>
+
+        <p>
+          Review the explanations and try again.
+        </p>
+
+      }
+
+    </div>
+
+    <div class="review-section">
+
+  <h2>Question Review</h2>
+
+  <p class="review-subtitle">
+    Review your answers and learn from the explanations.
+  </p>
+
+
+  @if (quiz()) {
+
+    @for (
+      question of quiz()!.questions;
+      track $index
+    ) {
+
+      <div
+        class="question-review"
+        [class.correct-answer]="isCorrect($index)"
+        [class.wrong-answer]="!isCorrect($index)"
+      >
+
+        <div class="question-header">
+
+          <span class="question-number">
+            Question {{ $index + 1 }}
+          </span>
+
+          @if (isCorrect($index)) {
+
+            <span class="result-badge correct-badge">
+              ✓ Correct
+            </span>
+
+          } @else {
+
+            <span class="result-badge wrong-badge">
+              ✕ Wrong
+            </span>
+
+          }
+
+        </div>
+
+
+        <h3>
+          {{ question.question }}
+        </h3>
+
+
+        <div class="answer-block">
+
+          <div class="answer-row">
+
+            <span class="answer-label">
+              Your answer
+            </span>
+
+            <span
+              class="answer-value"
+              [class.correct-text]="isCorrect($index)"
+              [class.wrong-text]="!isCorrect($index)"
+            >
+              {{ getUserAnswer($index) }}
+
+              @if (isCorrect($index)) {
+                ✓
+              } @else {
+                ✕
+              }
+
+            </span>
+
+          </div>
+
+
+          @if (!isCorrect($index)) {
+
+            <div class="answer-row">
+
+              <span class="answer-label">
+                Correct answer
+              </span>
+
+              <span class="answer-value correct-text">
+                {{ question.correct_answer }} ✓
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <div class="explanation">
+
+          <strong>💡 Explanation</strong>
+
+          <p>
+            {{ question.explanation }}
+          </p>
+
+        </div>
+
+      </div>
+
+    }
+
+  }
+
+</div>
+
+    <div class="actions">
+
+      <a
+        routerLink="/"
+        class="primary-button"
+      >
+        Take Another Quiz
+      </a>
+
+      <a
+        routerLink="/history"
+        class="secondary-button"
+      >
+        View History
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

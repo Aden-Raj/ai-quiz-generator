@@ -1,0 +1,158 @@
+<div class="quiz-container">
+
+  @if (quiz(); as currentQuiz) {
+
+    @if (!quizCompleted()) {
+
+      <div class="quiz-card">
+
+        <!-- Header -->
+
+        <div class="quiz-header">
+
+          <div class="question-info">
+
+            <span class="question-number">
+
+              Question
+              {{ currentQuestionIndex() + 1 }}
+
+              <span class="question-total">
+                /
+                {{ currentQuiz.questions.length }}
+              </span>
+
+            </span>
+
+            <span class="difficulty-badge">
+              {{ currentQuiz.difficulty }}
+            </span>
+
+          </div>
+
+
+          <!-- Progress -->
+
+          <div class="progress-container">
+
+            <div class="progress-track">
+
+              <div
+                class="progress-bar"
+                [style.width.%]="
+                  (
+                    (currentQuestionIndex() + 1)
+                    /
+                    currentQuiz.questions.length
+                  ) * 100
+                "
+              ></div>
+
+            </div>
+
+            <span class="progress-text">
+
+              {{ currentQuestionIndex() + 1 }}
+              of
+              {{ currentQuiz.questions.length }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Question -->
+
+        <div class="question-section">
+
+          <span class="question-label">
+            Question
+          </span>
+
+          <h2>
+            {{ getCurrentQuestion()?.question }}
+          </h2>
+
+        </div>
+
+
+        <!-- Options -->
+
+        <div class="options">
+
+          @for (
+            option of getCurrentQuestion()?.options;
+            track option
+          ) {
+
+            <button
+              class="option-btn"
+              [class.selected]="
+                isSelected(option)
+              "
+              (click)="selectAnswer(option)"
+            >
+
+              <span class="option-text">
+                {{ option }}
+              </span>
+
+            </button>
+
+          }
+
+        </div>
+
+
+        <!-- Footer -->
+
+        <div class="quiz-footer">
+
+          <span class="selection-hint">
+
+            @if (selectedAnswer()) {
+
+              Answer selected ✓
+
+            } @else {
+
+              Select an answer
+
+            }
+
+          </span>
+
+
+          <button
+            class="next-button"
+            (click)="nextQuestion()"
+            [disabled]="!selectedAnswer()"
+          >
+
+            @if (
+              currentQuestionIndex()
+              ===
+              currentQuiz.questions.length - 1
+            ) {
+
+              Finish Quiz
+
+            } @else {
+
+              Next Question →
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+  }
+
+</div>

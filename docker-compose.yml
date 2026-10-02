@@ -1,0 +1,56 @@
+services:
+
+  postgres:
+    image: postgres:18
+    container_name: ai-quiz-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ai_quiz_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+
+  backend:
+    build:
+      context: ./backend
+
+    container_name: ai-quiz-backend
+
+    restart: unless-stopped
+
+    env_file:
+      - ./backend/.env.docker
+
+    ports:
+      - "8001:8000"
+
+    depends_on:
+      - postgres
+
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: ai-quiz-frontend
+
+    restart: unless-stopped
+
+    ports:
+      - "4200:80"
+
+    depends_on:
+      - backend
+
+
+volumes:
+
+  postgres_data:
