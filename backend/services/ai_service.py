@@ -223,6 +223,10 @@ Requirements:
             "questions": quiz_data
         }
 
+    if isinstance(quiz_data, dict):
+        quiz_data.setdefault("topic", request.topic)
+        quiz_data.setdefault("difficulty", request.difficulty)
+
     # ========================================================
     # MAKE SURE RESPONSE IS A DICTIONARY
     # ========================================================
